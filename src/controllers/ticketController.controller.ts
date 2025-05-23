@@ -1,27 +1,27 @@
-import { Request, Response } from "express";
-import { bookTicket } from "../services/bookTicket.service";
-import { cancelTicket } from "../services/cancelTicket.service";
+import {
+  bookTicket,
+  cancelTicket,
+  getAvailability,
+  getBookedTickets,
+} from "../services";
+import { handleRequest } from "../utils/helper";
 
-export const book = async (req: Request, res: Response) => {
-  try {
-    const ticket = await bookTicket(req.body.passengers);
-    res.status(201).json(ticket);
-  } catch (error) {
-    res.status(400).json({
-      error:
-        error instanceof Error ? error.message : "An unknown error occurred",
-    });
-  }
-};
+export const book = handleRequest(async (req, res) => {
+  const ticket = await bookTicket(req.body.passengers);
+  res.status(201).json(ticket);
+});
 
-export const cancel = async (req: Request, res: Response) => {
-  try {
-    const ticket = await cancelTicket(parseInt(req.params.ticketId));
-    res.json(ticket);
-  } catch (error) {
-    res.status(400).json({
-      error:
-        error instanceof Error ? error.message : "An unknown error occurred",
-    });
-  }
-};
+export const cancel = handleRequest(async (req, res) => {
+  const ticket = await cancelTicket(parseInt(req.params.ticketId));
+  res.json(ticket);
+});
+
+export const booked = handleRequest(async (_req, res) => {
+  const tickets = await getBookedTickets();
+  res.json(tickets);
+});
+
+export const available = handleRequest(async (_req, res) => {
+  const availability = await getAvailability();
+  res.json(availability);
+});
