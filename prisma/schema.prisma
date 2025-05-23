@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ticket {
+  id         Int          @id @default(autoincrement())
+  status     TicketStatus
+  passengers Passenger[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  canceledAt DateTime?
+}
+
+enum TicketStatus {
+  CONFIRMED
+  RAC
+  WAITING
+  CANCELLED
+}
+
+model Passenger {
+  id              Int              @id @default(autoincrement())
+  name            String
+  age             Int
+  gender          Gender
+  ticket          Ticket?          @relation(fields: [ticketId], references: [id])
+  ticketId        Int?
+  berthAllocation BerthAllocation?
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+model BerthAllocation {
+  id          Int       @id @default(autoincrement())
+  passenger   Passenger @relation(fields: [passengerId], references: [id])
+  passengerId Int       @unique
+  berthType   BerthType
+  berthNumber String?
+}
+
+enum BerthType {
+  LOWER
+  UPPER
+  MIDDLE
+  SIDE_LOWER
+}
+
+model SeatInventory {
+  id        Int    @id @default(autoincrement())
+  type      String @unique
+  available Int
+  capacity  Int
+}
