@@ -40,7 +40,7 @@ This is a RESTful API for managing railway ticket reservations, built with Node.
 1.  **Build and run the application using Docker Compose:**
 
     ```bash
-    docker-compose up -d
+    docker-compose up --build
     ```
 
 The application will be available at `http://localhost:3000`.

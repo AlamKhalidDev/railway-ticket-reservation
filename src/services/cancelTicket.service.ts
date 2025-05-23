@@ -72,7 +72,7 @@ export async function cancelTicket(ticketId: number) {
         continue;
       }
 
-      const newTicket = await tx.ticket.update({
+      await tx.ticket.update({
         where: { id: racTicket.id },
         data: { status: TicketStatus.CONFIRMED },
       });
