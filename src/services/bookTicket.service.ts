@@ -124,7 +124,7 @@ export async function bookTicket(passengers: PassengerInput[]) {
                           berthType: allocations[index].berthType,
                           berthNumber: generateBerthNumber(
                             allocations[index].berthType,
-                            berthSequence.LOWER + index
+                            berthSequence[allocations[index].berthType] + index
                           ),
                         },
                       }
