@@ -6,7 +6,6 @@ import {
   getBerthAvailability,
   updateSeatInventory,
 } from "./helper";
-import { get } from "http";
 
 export async function cancelTicket(ticketId: number) {
   return await prisma.$transaction(async (tx) => {
