@@ -3,8 +3,10 @@ import prisma from "../config/prisma";
 import {
   allocateConfirmedBerths,
   generateBerthNumber,
+  getBerthAvailability,
   updateSeatInventory,
 } from "./helper";
+import { get } from "http";
 
 export async function cancelTicket(ticketId: number) {
   return await prisma.$transaction(async (tx) => {
@@ -52,8 +54,8 @@ export async function cancelTicket(ticketId: number) {
       },
     });
 
-    let freedConfirmed = Object.values(berthReleases).reduce(
-      (a, b) => a + b,
+    let freedConfirmed = Object.values(await getBerthAvailability(tx)).reduce(
+      (acc, count) => acc + count,
       0
     );
 
